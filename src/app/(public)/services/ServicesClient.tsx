@@ -2,7 +2,9 @@
 
 import { useState, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Search, Filter, Zap, Clock, Star, ArrowRight, ChevronDown } from "lucide-react";
+import { Search, Filter, Zap, Clock, Star, ArrowRight, ChevronDown, Globe } from "lucide-react";
+import { FaTiktok, FaYoutube, FaFacebook, FaInstagram, FaTelegram } from "react-icons/fa";
+import { FaXTwitter } from "react-icons/fa6";
 import Link from "next/link";
 import { Card } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
@@ -42,13 +44,13 @@ const SERVICES = [
 ];
 
 const PLATFORMS = [
-  { id: "all",       name: "All Platforms", emoji: "🌐" },
-  { id: "tiktok",   name: "TikTok",         emoji: "🎵" },
-  { id: "youtube",  name: "YouTube",         emoji: "▶️" },
-  { id: "facebook", name: "Facebook",        emoji: "👍" },
-  { id: "instagram",name: "Instagram",       emoji: "📷" },
-  { id: "twitter",  name: "X (Twitter)",     emoji: "🐦" },
-  { id: "telegram", name: "Telegram",        emoji: "✈️" },
+  { id: "all",       name: "All Platforms", icon: Globe },
+  { id: "tiktok",   name: "TikTok",         icon: FaTiktok },
+  { id: "youtube",  name: "YouTube",         icon: FaYoutube },
+  { id: "facebook", name: "Facebook",        icon: FaFacebook },
+  { id: "instagram",name: "Instagram",       icon: FaInstagram },
+  { id: "twitter",  name: "X (Twitter)",     icon: FaXTwitter },
+  { id: "telegram", name: "Telegram",        icon: FaTelegram },
 ];
 
 const PLATFORM_GRADIENTS: Record<string, string> = {
@@ -123,7 +125,7 @@ export default function ServicesClient() {
                       : "bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700"
                   }`}
                 >
-                  <span>{p.emoji}</span>
+                  <p.icon size={16} />
                   <span>{p.name}</span>
                 </button>
               ))}
@@ -180,7 +182,10 @@ export default function ServicesClient() {
                   {/* Platform chip */}
                   <div className="flex items-center justify-between">
                     <span className={`inline-flex items-center gap-1.5 text-xs font-semibold px-2.5 py-1 rounded-full text-white ${PLATFORM_GRADIENTS[svc.platform]}`}>
-                      {PLATFORMS.find((p) => p.id === svc.platform)?.emoji}
+                      {(() => {
+                        const Icon = PLATFORMS.find((p) => p.id === svc.platform)?.icon;
+                        return Icon ? <Icon size={12} /> : null;
+                      })()}
                       {PLATFORMS.find((p) => p.id === svc.platform)?.name}
                     </span>
                     <QualityBadge quality={svc.quality} />

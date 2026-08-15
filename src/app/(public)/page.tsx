@@ -88,10 +88,6 @@ export default function HomePage() {
           transition={{ duration: 0.8, ease: "easeOut" }}
           className="max-w-4xl mx-auto z-10"
         >
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 mb-8 backdrop-blur-md">
-            <span className="flex h-2 w-2 rounded-full bg-brand-500 animate-ping"></span>
-            <span className="text-sm font-medium text-gray-300">Ghana's #1 Premium SMM Provider</span>
-          </div>
 
           <h1 className="text-4xl md:text-6xl font-extrabold tracking-tight mb-8 leading-[1.1]">
             Grow Your Social Media <br />
@@ -117,11 +113,6 @@ export default function HomePage() {
             </Link>
           </div>
 
-          <div className="mt-14 flex items-center justify-center gap-6 text-gray-500 text-sm font-medium">
-            <span className="flex items-center gap-2"><CheckCircle2 className="text-brand-500" size={16} /> Instant Start</span>
-            <span className="flex items-center gap-2"><CheckCircle2 className="text-brand-500" size={16} /> 24/7 Support</span>
-            <span className="flex items-center gap-2"><CheckCircle2 className="text-brand-500" size={16} /> MoMo Accepted</span>
-          </div>
         </motion.div>
       </section>
 

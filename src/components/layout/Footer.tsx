@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { Zap, Twitter, Facebook, Instagram, Youtube, Send } from "lucide-react";
 
 const FOOTER_LINKS = {
@@ -54,13 +55,8 @@ export function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-10">
           {/* Brand */}
           <div className="lg:col-span-2">
-            <Link href="/" className="flex items-center gap-2.5 mb-4">
-              <div className="w-9 h-9 rounded-xl bg-brand-600 flex items-center justify-center shadow-brand">
-                <Zap size={18} className="text-white" />
-              </div>
-              <span className="font-display font-bold text-lg text-white">
-                Jel<span className="gradient-text">boost</span> GH
-              </span>
+            <Link href="/" className="flex items-center mb-4">
+              <Image src="/logo.png" alt="Jelboost Logo" width={160} height={48} className="h-10 w-auto md:h-12 mix-blend-screen" />
             </Link>
             <p className="text-sm text-gray-400 leading-relaxed mb-6 max-w-xs">
               Ghana&apos;s #1 social media growth platform. Buy high-quality followers, likes, and views for all major platforms. Fast, safe, and affordable.

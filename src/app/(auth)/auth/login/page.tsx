@@ -8,6 +8,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { motion } from "framer-motion";
 import Link from "next/link";
+import Image from "next/image";
 import { Eye, EyeOff, Mail, Lock, Zap } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
@@ -64,8 +65,8 @@ export default function LoginPage() {
       >
         {/* Logo */}
         <div className="text-center mb-8">
-          <Link href="/" className="inline-flex items-center justify-center w-12 h-12 bg-brand-600 rounded-2xl mb-6 shadow-brand">
-            <Zap className="text-white" size={24} />
+          <Link href="/" className="inline-flex justify-center mb-6">
+            <Image src="/logo.png" alt="Jelboost Logo" width={160} height={48} className="h-12 w-auto mix-blend-screen" priority />
           </Link>
           <h1 className="font-display text-2xl font-bold text-white">Welcome back</h1>
           <p className="text-white/60 text-sm mt-1">Sign in to your account</p>

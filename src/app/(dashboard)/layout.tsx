@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import Image from "next/image";
 import { useSession, signOut } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
@@ -63,13 +64,8 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
   const SidebarContent = () => (
     <div className="flex flex-col h-full">
       {/* Logo */}
-      <div className="flex items-center gap-2.5 px-6 py-5 border-b border-surface-border dark:border-surface-border-dark">
-        <div className="w-8 h-8 rounded-xl bg-brand-gradient flex items-center justify-center shadow-brand">
-          <Zap size={16} className="text-white" />
-        </div>
-        <span className="font-display font-bold text-base text-gray-900 dark:text-white">
-          Jel<span className="gradient-text">boost</span>
-        </span>
+      <div className="flex items-center px-6 py-5 border-b border-surface-border dark:border-surface-border-dark">
+        <Image src="/logo.png" alt="Jelboost Logo" width={140} height={42} className="h-8 w-auto mix-blend-multiply dark:mix-blend-lighten" />
       </div>
 
       {/* Balance Card */}

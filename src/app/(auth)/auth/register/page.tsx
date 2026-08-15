@@ -8,6 +8,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { motion } from "framer-motion";
 import Link from "next/link";
+import Image from "next/image";
 import { Eye, EyeOff, Mail, Lock, User, Zap, CheckCircle2 } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
@@ -66,11 +67,8 @@ export default function RegisterPage() {
     >
       {/* Left — Benefits */}
       <div className="hidden lg:flex flex-col justify-center p-10 bg-white/5 backdrop-blur-sm border border-white/10 rounded-l-3xl">
-        <div className="flex items-center gap-2.5 mb-8">
-          <div className="w-9 h-9 rounded-xl bg-brand-gradient flex items-center justify-center">
-            <Zap size={18} className="text-white" />
-          </div>
-          <span className="font-display font-bold text-xl text-white">Jelboost GH</span>
+        <div className="flex items-center mb-10">
+          <Image src="/logo.png" alt="Jelboost Logo" width={160} height={48} className="h-10 w-auto mix-blend-screen" priority />
         </div>
         <h2 className="font-display text-3xl font-bold text-white mb-4">
           Grow your social media <span className="gradient-text">today</span>

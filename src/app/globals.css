@@ -1,0 +1,376 @@
+@import "tailwindcss";
+
+@variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --font-sans: var(--font-inter), "Inter", system-ui, -apple-system, sans-serif;
+  --font-display: var(--font-outfit), "Outfit", system-ui, -apple-system, sans-serif;
+
+  --color-brand-50: #ecfdf5;
+  --color-brand-100: #d1fae5;
+  --color-brand-200: #a7f3d0;
+  --color-brand-300: #6ee7b7;
+  --color-brand-400: #34d399;
+  --color-brand-500: #10b981;
+  --color-brand-600: #059669;
+  --color-brand-700: #047857;
+  --color-brand-800: #065f46;
+  --color-brand-900: #064e3b;
+  --color-brand-950: #022c22;
+
+  --color-accent-50: #f0fdf4;
+  --color-accent-100: #dcfce7;
+  --color-accent-200: #bbf7d0;
+  --color-accent-300: #86efac;
+  --color-accent-400: #4ade80;
+  --color-accent-500: #22c55e;
+  --color-accent-600: #16a34a;
+  --color-accent-700: #15803d;
+  --color-accent-800: #166534;
+  --color-accent-900: #14532d;
+
+  --color-surface: #ffffff;
+  --color-surface-dark: #08111d;
+  --color-surface-card: #ffffff;
+  --color-surface-card-dark: #0f1c2e;
+  --color-surface-border: #e2e8f0;
+  --color-surface-border-dark: #1e293b;
+
+  --shadow-brand: 0 4px 24px rgba(16, 185, 129, 0.3);
+  --shadow-brand-lg: 0 8px 48px rgba(16, 185, 129, 0.35);
+  --shadow-glow: 0 0 40px rgba(16, 185, 129, 0.22);
+}
+
+:root {
+  --font-inter: "Inter", sans-serif;
+  --font-outfit: "Outfit", sans-serif;
+
+  /* Brand Colors */
+  --brand-primary: #10b981;
+  --brand-secondary: #059669;
+  --brand-accent: #34d399;
+
+  /* Surfaces */
+  --bg-primary: #ffffff;
+  --bg-secondary: #f8fafc;
+  --bg-tertiary: #f1f5f9;
+  --text-primary: #0f172a;
+  --text-secondary: #475569;
+  --text-muted: #94a3b8;
+  --border-color: #e2e8f0;
+  --card-bg: #ffffff;
+  --card-shadow: 0 1px 3px rgba(0, 0, 0, 0.05), 0 1px 2px rgba(0, 0, 0, 0.03);
+}
+
+.dark {
+  --bg-primary: #08111d;
+  --bg-secondary: #0c1828;
+  --bg-tertiary: #102136;
+  --text-primary: #f8fafc;
+  --text-secondary: #94a3b8;
+  --text-muted: #64748b;
+  --border-color: #1e293b;
+  --card-bg: #0f1c2e;
+  --card-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+}
+
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  font-family: var(--font-inter);
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  transition: background-color 0.3s ease, color 0.3s ease;
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+button,
+a,
+input,
+select,
+textarea {
+  -webkit-tap-highlight-color: transparent;
+}
+
+button,
+a {
+  touch-action: manipulation;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: var(--bg-secondary);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--brand-primary);
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--brand-secondary);
+}
+
+/* Selection */
+::selection {
+  background-color: rgba(99, 102, 241, 0.25);
+  color: var(--text-primary);
+}
+
+/* Focus visible */
+*:focus-visible {
+  outline: 2px solid var(--brand-primary);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* Gradient text utility */
+.gradient-text {
+  color: var(--brand-primary);
+}
+
+.bg-brand-gradient {
+  background-color: var(--brand-secondary) !important;
+  background-image: none !important;
+}
+
+/* Glass effect */
+.glass {
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.dark .glass {
+  background: rgba(15, 15, 26, 0.6);
+  border: 1px solid rgba(99, 102, 241, 0.15);
+}
+
+/* Shimmer loading */
+.shimmer {
+  background: linear-gradient(
+    90deg,
+    var(--bg-secondary) 0%,
+    var(--bg-tertiary) 50%,
+    var(--bg-secondary) 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+/* Card base */
+.card {
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 1rem;
+  box-shadow: var(--card-shadow);
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 32px rgba(99, 102, 241, 0.15);
+  border-color: rgba(99, 102, 241, 0.3);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Animated gradient border */
+.gradient-border {
+  position: relative;
+  background: var(--card-bg);
+  border-radius: 1rem;
+}
+
+.gradient-border::before {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  background: var(--brand-primary);
+  z-index: -1;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.gradient-border:hover::before {
+  opacity: 1;
+}
+
+/* Platform badge colors */
+.platform-tiktok   { background: #111827; }
+.platform-youtube  { background: #dc2626; }
+.platform-facebook { background: #2563eb; }
+.platform-instagram{ background: #db2777; }
+.platform-twitter  { background: #0ea5e9; }
+.platform-telegram { background: #0284c7; }
+
+/* Custom button animations */
+.btn-primary {
+  background: var(--brand-secondary);
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.btn-primary::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--brand-primary);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.btn-primary:hover::after {
+  opacity: 1;
+}
+
+.btn-primary span {
+  position: relative;
+  z-index: 1;
+}
+
+/* Number counter animation */
+@keyframes countUp {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.count-up {
+  animation: countUp 0.8s ease-out forwards;
+}
+
+/* Notification dot pulse */
+.notification-pulse {
+  position: relative;
+}
+
+.notification-pulse::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: inherit;
+  animation: pulse 2s ease-in-out infinite;
+}
+
+/* Status indicator colors */
+.status-pending    { color: #f59e0b; background: rgba(245, 158, 11, 0.1); }
+.status-processing { color: #3b82f6; background: rgba(59, 130, 246, 0.1); }
+.status-completed  { color: #10b981; background: rgba(16, 185, 129, 0.1); }
+.status-cancelled  { color: #ef4444; background: rgba(239, 68, 68, 0.1); }
+.status-partial    { color: #f97316; background: rgba(249, 115, 22, 0.1); }
+.status-refunded   { color: #8b5cf6; background: rgba(139, 92, 246, 0.1); }
+
+/* Prose for blog content */
+.prose-content {
+  font-size: 1.0625rem;
+  line-height: 1.8;
+  color: var(--text-secondary);
+}
+
+.prose-content h2 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 2rem 0 1rem;
+  font-family: var(--font-outfit);
+}
+
+.prose-content p {
+  margin-bottom: 1.25rem;
+}
+
+.prose-content a {
+  color: var(--brand-primary);
+  text-decoration: underline;
+}
+
+/* Hide scrollbar on mobile nav */
+.hide-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* Auth forms need explicit vertical rhythm so field labels never collide with controls. */
+.auth-registration-card {
+  padding: clamp(1.5rem, 5vw, 2rem);
+}
+
+.auth-page-shell {
+  align-items: flex-start;
+  overflow-y: auto;
+  padding-block: 2rem;
+}
+
+@media (min-height: 850px) {
+  .auth-page-shell {
+    align-items: center;
+  }
+}
+
+.auth-registration-form {
+  display: grid;
+  gap: 0.875rem;
+  margin-top: 1.25rem;
+}
+
+.auth-registration-form > div {
+  min-width: 0;
+}
+
+.auth-registration-form label {
+  display: block;
+  line-height: 1.25rem;
+}
+
+.auth-registration-form input {
+  min-height: 2.75rem;
+  line-height: 1.25rem;
+}
+
+/* Responsive utility */
+@media (max-width: 640px) {
+  .container { padding-left: 1rem; padding-right: 1rem; }
+
+  .card:hover {
+    transform: none;
+  }
+
+  input, select, textarea {
+    font-size: 16px;
+  }
+
+  .auth-registration-card {
+    border-radius: 1.5rem;
+  }
+
+  .auth-page-shell {
+    padding-block: 1rem;
+  }
+}

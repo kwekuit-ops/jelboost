@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-export const metadata: Metadata = { title: "Terms of Service", description: "Read SocialBoost GH Terms of Service." };
+export const metadata: Metadata = { title: "Terms of Service", description: "Read Jelboost GH Terms of Service." };
 
 export default function TermsPage() {
   return (
@@ -10,11 +10,11 @@ export default function TermsPage() {
         <div className="prose prose-gray dark:prose-invert max-w-none space-y-6 text-sm leading-relaxed text-gray-700 dark:text-gray-300">
           <section>
             <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-3">1. Agreement to Terms</h2>
-            <p>By accessing or using SocialBoost GH (&quot;Service&quot;), you agree to be bound by these Terms of Service. If you disagree with any part, you may not use our service.</p>
+            <p>By accessing or using Jelboost GH (&quot;Service&quot;), you agree to be bound by these Terms of Service. If you disagree with any part, you may not use our service.</p>
           </section>
           <section>
             <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-3">2. Services Provided</h2>
-            <p>SocialBoost GH provides social media engagement services including followers, likes, views, and other engagement metrics for various platforms. We do not guarantee specific results as platform algorithms may change.</p>
+            <p>Jelboost GH provides social media engagement services including followers, likes, views, and other engagement metrics for various platforms. We do not guarantee specific results as platform algorithms may change.</p>
           </section>
           <section>
             <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-3">3. Account Responsibility</h2>
@@ -30,7 +30,7 @@ export default function TermsPage() {
           </section>
           <section>
             <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-3">6. Limitation of Liability</h2>
-            <p>SocialBoost GH shall not be liable for any indirect, incidental, or consequential damages arising from the use of our services. Our liability is limited to the amount paid for the specific order in question.</p>
+            <p>Jelboost GH shall not be liable for any indirect, incidental, or consequential damages arising from the use of our services. Our liability is limited to the amount paid for the specific order in question.</p>
           </section>
           <section>
             <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-3">7. Changes to Terms</h2>
@@ -38,7 +38,7 @@ export default function TermsPage() {
           </section>
           <section>
             <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-3">8. Contact</h2>
-            <p>For questions about these terms, contact us at: <a href="mailto:legal@socialboostgh.com" className="text-brand-500 hover:text-brand-600">legal@socialboostgh.com</a></p>
+            <p>For questions about these terms, contact us at: <a href="mailto:legal@jelboostgh.com" className="text-brand-500 hover:text-brand-600">legal@jelboostgh.com</a></p>
           </section>
         </div>
       </div>

@@ -68,7 +68,7 @@ export async function POST(req: NextRequest) {
             currency:     "GHS",
             redirect_url: `${process.env.NEXT_PUBLIC_APP_URL}/dashboard/wallet?success=true`,
             customer:     { email: session.user.email, name: session.user.name },
-            customizations: { title: "SocialBoost GH — Wallet Deposit" },
+            customizations: { title: "Jelboost GH — Wallet Deposit" },
           }),
         });
         const data = await res.json();

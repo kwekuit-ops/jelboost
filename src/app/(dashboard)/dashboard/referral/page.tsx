@@ -17,7 +17,7 @@ const REFERRAL_STATS = [
 export default function ReferralPage() {
   const { data: session } = useSession();
   const referralCode = "SB" + (session?.user?.id?.slice(0, 6).toUpperCase() || "XXXXXX");
-  const referralLink = `${process.env.NEXT_PUBLIC_APP_URL || "https://socialboostgh.com"}/auth/register?ref=${referralCode}`;
+  const referralLink = `${process.env.NEXT_PUBLIC_APP_URL || "https://jelboostgh.com"}/auth/register?ref=${referralCode}`;
 
   const copyLink = () => {
     navigator.clipboard.writeText(referralLink);
@@ -28,7 +28,7 @@ export default function ReferralPage() {
     <div className="space-y-6 max-w-3xl">
       <div>
         <h1 className="font-display text-2xl font-bold text-gray-900 dark:text-white">Referral Program</h1>
-        <p className="text-sm text-gray-500 dark:text-gray-400 mt-0.5">Earn commissions by referring friends to SocialBoost GH</p>
+        <p className="text-sm text-gray-500 dark:text-gray-400 mt-0.5">Earn commissions by referring friends to Jelboost GH</p>
       </div>
 
       {/* Hero Banner */}
@@ -86,8 +86,8 @@ export default function ReferralPage() {
         <h3 className="font-display font-bold text-gray-900 dark:text-white mb-4">Share Your Link</h3>
         <div className="flex flex-wrap gap-3">
           {[
-            { label: "WhatsApp",  color: "bg-green-500 hover:bg-green-600", href: `https://wa.me/?text=Join+SocialBoost+GH+using+my+referral+link:+${encodeURIComponent(referralLink)}` },
-            { label: "Twitter/X", color: "bg-gray-900 hover:bg-gray-800",   href: `https://twitter.com/intent/tweet?text=Grow+your+social+media+with+%40socialboostgh!+Use+my+referral+link:&url=${encodeURIComponent(referralLink)}` },
+            { label: "WhatsApp",  color: "bg-green-500 hover:bg-green-600", href: `https://wa.me/?text=Join+Jelboost+GH+using+my+referral+link:+${encodeURIComponent(referralLink)}` },
+            { label: "Twitter/X", color: "bg-gray-900 hover:bg-gray-800",   href: `https://twitter.com/intent/tweet?text=Grow+your+social+media+with+%40jelboostgh!+Use+my+referral+link:&url=${encodeURIComponent(referralLink)}` },
             { label: "Facebook",  color: "bg-blue-600 hover:bg-blue-700",   href: `https://facebook.com/sharer/sharer.php?u=${encodeURIComponent(referralLink)}` },
             { label: "Telegram",  color: "bg-sky-500 hover:bg-sky-600",     href: `https://t.me/share/url?url=${encodeURIComponent(referralLink)}` },
           ].map(({ label, color, href }) => (

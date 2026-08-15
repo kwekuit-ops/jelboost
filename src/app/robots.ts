@@ -9,6 +9,6 @@ export default function robots(): MetadataRoute.Robots {
         disallow: ["/dashboard/", "/admin/", "/api/"],
       },
     ],
-    sitemap: `${process.env.NEXT_PUBLIC_APP_URL || "https://socialboostgh.com"}/sitemap.xml`,
+    sitemap: `${process.env.NEXT_PUBLIC_APP_URL || "https://jelboostgh.com"}/sitemap.xml`,
   };
 }

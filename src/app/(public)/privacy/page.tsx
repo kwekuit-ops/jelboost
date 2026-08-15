@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-export const metadata: Metadata = { title: "Privacy Policy", description: "How SocialBoost GH handles your data." };
+export const metadata: Metadata = { title: "Privacy Policy", description: "How Jelboost GH handles your data." };
 
 export default function PrivacyPage() {
   return (
@@ -26,7 +26,7 @@ export default function PrivacyPage() {
           </section>
           <section>
             <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-3">5. Your Rights</h2>
-            <p>You have the right to access, correct, or delete your personal data. To exercise these rights, contact us at privacy@socialboostgh.com. We will respond within 30 days.</p>
+            <p>You have the right to access, correct, or delete your personal data. To exercise these rights, contact us at privacy@jelboostgh.com. We will respond within 30 days.</p>
           </section>
           <section>
             <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-3">6. Cookies</h2>
@@ -34,7 +34,7 @@ export default function PrivacyPage() {
           </section>
           <section>
             <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-3">7. Contact</h2>
-            <p>Privacy questions: <a href="mailto:privacy@socialboostgh.com" className="text-brand-500 hover:text-brand-600">privacy@socialboostgh.com</a></p>
+            <p>Privacy questions: <a href="mailto:privacy@jelboostgh.com" className="text-brand-500 hover:text-brand-600">privacy@jelboostgh.com</a></p>
           </section>
         </div>
       </div>

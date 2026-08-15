@@ -35,11 +35,11 @@ const FOOTER_LINKS = {
 };
 
 const SOCIAL_LINKS = [
-  { icon: Twitter,   href: "https://twitter.com/socialboostgh",   label: "Twitter" },
-  { icon: Facebook,  href: "https://facebook.com/socialboostgh",  label: "Facebook" },
-  { icon: Instagram, href: "https://instagram.com/socialboostgh", label: "Instagram" },
-  { icon: Youtube,   href: "https://youtube.com/@socialboostgh",  label: "YouTube" },
-  { icon: Send,      href: "https://t.me/socialboostgh",          label: "Telegram" },
+  { icon: Twitter,   href: "https://twitter.com/jelboostgh",   label: "Twitter" },
+  { icon: Facebook,  href: "https://facebook.com/jelboostgh",  label: "Facebook" },
+  { icon: Instagram, href: "https://instagram.com/jelboostgh", label: "Instagram" },
+  { icon: Youtube,   href: "https://youtube.com/@jelboostgh",  label: "YouTube" },
+  { icon: Send,      href: "https://t.me/jelboostgh",          label: "Telegram" },
 ];
 
 const PAYMENT_ICONS = ["Paystack", "Flutterwave", "Stripe", "PayPal", "USDT", "MTN MoMo"];
@@ -59,7 +59,7 @@ export function Footer() {
                 <Zap size={18} className="text-white" />
               </div>
               <span className="font-display font-bold text-lg text-white">
-                Social<span className="gradient-text">Boost</span> GH
+                Jel<span className="gradient-text">boost</span> GH
               </span>
             </Link>
             <p className="text-sm text-gray-400 leading-relaxed mb-6 max-w-xs">
@@ -123,7 +123,7 @@ export function Footer() {
       <div className="border-t border-gray-800">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-5 flex flex-col sm:flex-row items-center justify-between gap-3">
           <p className="text-xs text-gray-500">
-            &copy; {year} SocialBoost GH. All rights reserved.
+            &copy; {year} Jelboost GH. All rights reserved.
           </p>
           <div className="flex items-center gap-4">
             <Link href="/terms" className="text-xs text-gray-500 hover:text-gray-300 transition-colors">Terms</Link>

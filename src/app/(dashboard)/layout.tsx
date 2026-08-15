@@ -68,7 +68,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
           <Zap size={16} className="text-white" />
         </div>
         <span className="font-display font-bold text-base text-gray-900 dark:text-white">
-          Social<span className="gradient-text">Boost</span>
+          Jel<span className="gradient-text">boost</span>
         </span>
       </div>
 

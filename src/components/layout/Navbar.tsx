@@ -55,12 +55,12 @@ export function Navbar() {
       <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16 lg:h-20">
           {/* Logo */}
-          <Link href="/" className="flex items-center gap-2.5 shrink-0" aria-label="SocialBoost GH home">
+          <Link href="/" className="flex items-center gap-2.5 shrink-0" aria-label="Jelboost GH home">
             <div className="w-9 h-9 rounded-xl bg-brand-600 flex items-center justify-center shadow-brand">
               <Zap size={18} className="text-white" />
             </div>
             <span className="font-display font-bold text-lg text-slate-900 dark:text-white tracking-tight">
-              Social<span className="text-brand-500 dark:text-brand-400">Boost</span><span className="hidden xs:inline"> GH</span>
+              Jel<span className="text-brand-500 dark:text-brand-400">boost</span><span className="hidden xs:inline"> GH</span>
             </span>
           </Link>
 

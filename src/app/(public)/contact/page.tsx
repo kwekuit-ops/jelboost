@@ -18,7 +18,7 @@ const schema = z.object({
 type ContactForm = z.infer<typeof schema>;
 
 const INFO = [
-  { icon: Mail,    label: "Email",          value: "support@socialboostgh.com" },
+  { icon: Mail,    label: "Email",          value: "support@jelboostgh.com" },
   { icon: Phone,   label: "WhatsApp",       value: "+233 XX XXX XXXX" },
   { icon: MapPin,  label: "Location",       value: "Accra, Ghana 🇬🇭" },
   { icon: Clock,   label: "Support Hours",  value: "24/7 — We're always available" },

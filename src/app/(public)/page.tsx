@@ -152,7 +152,7 @@ export default function HomePage() {
       {/* ══ FEATURES ════════════════════════════════════════════════════════ */}
       <section className="py-24 px-6 max-w-7xl mx-auto relative z-10">
         <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-5xl font-bold mb-4">Why Choose SocialBoost GH?</h2>
+          <h2 className="text-3xl md:text-5xl font-bold mb-4">Why Choose Jelboost GH?</h2>
           <p className="text-gray-400 text-lg max-w-2xl mx-auto">We provide the highest quality services on the market, built on a robust, automated infrastructure.</p>
         </div>
 
@@ -240,7 +240,7 @@ export default function HomePage() {
         
         <div className="max-w-4xl mx-auto text-center relative z-10 border border-brand-500/20 rounded-3xl p-12 md:p-20 bg-[#050B14]/80 backdrop-blur-xl shadow-2xl">
           <h2 className="text-4xl md:text-6xl font-bold mb-6">Ready to go viral?</h2>
-          <p className="text-xl text-gray-300 mb-10 max-w-2xl mx-auto">Join 50,000+ creators and businesses who trust SocialBoost GH to handle their social growth.</p>
+          <p className="text-xl text-gray-300 mb-10 max-w-2xl mx-auto">Join 50,000+ creators and businesses who trust Jelboost GH to handle their social growth.</p>
           
           <Link href="/auth/register">
             <Button size="xl" className="text-lg px-12 py-6 shadow-brand hover:scale-105 transition-transform" gradient>
@@ -257,7 +257,7 @@ export default function HomePage() {
           <div className="md:col-span-2">
             <Link href="/" className="flex items-center gap-2 mb-6">
               <TrendingUp className="text-brand-500" size={28} />
-              <span className="font-display font-bold text-2xl tracking-tight text-white">SocialBoost<span className="text-brand-500">GH</span></span>
+              <span className="font-display font-bold text-2xl tracking-tight text-white">Jelboost<span className="text-brand-500">GH</span></span>
             </Link>
             <p className="text-gray-400 max-w-sm mb-6 leading-relaxed">
               The premier Social Media Marketing panel in Ghana. We provide high-quality, instant, and affordable social media growth services.
@@ -280,7 +280,7 @@ export default function HomePage() {
           </div>
         </div>
         <div className="max-w-7xl mx-auto pt-8 border-t border-white/10 text-center text-gray-500 text-sm">
-          <p>&copy; {new Date().getFullYear()} SocialBoost GH. All rights reserved.</p>
+          <p>&copy; {new Date().getFullYear()} Jelboost GH. All rights reserved.</p>
         </div>
       </footer>
     </div>

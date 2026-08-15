@@ -75,7 +75,7 @@ export default function LoginPage() {
               <Zap size={20} className="text-white" />
             </div>
             <span className="font-display font-bold text-xl text-white">
-              Social<span className="text-brand-400">Boost</span> GH
+              Jel<span className="text-brand-400">boost</span> GH
             </span>
           </Link>
           <h1 className="font-display text-2xl font-bold text-white">Welcome back</h1>

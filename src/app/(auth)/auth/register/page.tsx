@@ -70,7 +70,7 @@ export default function RegisterPage() {
           <div className="w-9 h-9 rounded-xl bg-brand-gradient flex items-center justify-center">
             <Zap size={18} className="text-white" />
           </div>
-          <span className="font-display font-bold text-xl text-white">SocialBoost GH</span>
+          <span className="font-display font-bold text-xl text-white">Jelboost GH</span>
         </div>
         <h2 className="font-display text-3xl font-bold text-white mb-4">
           Grow your social media <span className="gradient-text">today</span>

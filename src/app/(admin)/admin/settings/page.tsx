@@ -40,10 +40,10 @@ export default function AdminSettingsPage() {
   const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm<GeneralForm>({
     resolver: zodResolver(generalSchema),
     defaultValues: {
-      siteName:            "SocialBoost GH",
-      siteUrl:             "https://socialboostgh.com",
-      siteEmail:           "info@socialboostgh.com",
-      supportEmail:        "support@socialboostgh.com",
+      siteName:            "Jelboost GH",
+      siteUrl:             "https://jelboostgh.com",
+      siteEmail:           "info@jelboostgh.com",
+      supportEmail:        "support@jelboostgh.com",
       defaultCurrency:     "USD",
       referralCommission:  5,
       welcomeBonus:        0,
@@ -62,7 +62,7 @@ export default function AdminSettingsPage() {
     <div className="space-y-6 max-w-3xl">
       <div>
         <h1 className="font-display text-xl font-bold text-white">Site Settings</h1>
-        <p className="text-gray-400 text-sm">Configure your SocialBoost GH platform</p>
+        <p className="text-gray-400 text-sm">Configure your Jelboost GH platform</p>
       </div>
 
       {/* Tabs */}

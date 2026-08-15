@@ -52,7 +52,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         </div>
         <div>
           <p className="font-display font-bold text-white text-sm">Admin Panel</p>
-          <p className="text-gray-500 text-[10px]">SocialBoost GH</p>
+          <p className="text-gray-500 text-[10px]">Jelboost GH</p>
         </div>
       </div>
 

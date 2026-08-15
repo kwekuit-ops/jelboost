@@ -20,7 +20,6 @@ const loginSchema = z.object({
 type LoginForm = z.infer<typeof loginSchema>;
 
 export default function LoginPage() {
-  const searchParams = useSearchParams();
   const router = useRouter();
   const [showPw, setShowPw] = useState(false);
 

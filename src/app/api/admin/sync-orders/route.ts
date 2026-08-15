@@ -7,8 +7,10 @@ import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { getProviderOrdersStatus } from "@/lib/providers/boostlegit";
 
+import { OrderStatus } from "@prisma/client";
+
 // Map BoostLegit statuses to your internal statuses
-const STATUS_MAP: Record<string, string> = {
+const STATUS_MAP: Record<string, OrderStatus> = {
   "Pending":     "PROCESSING",
   "In progress": "PROCESSING",
   "Processing":  "PROCESSING",

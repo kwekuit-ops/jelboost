@@ -93,7 +93,7 @@ export default function HomePage() {
             <span className="text-sm font-medium text-gray-300">Ghana's #1 Premium SMM Provider</span>
           </div>
 
-          <h1 className="text-5xl md:text-7xl font-extrabold tracking-tight mb-8 leading-[1.1]">
+          <h1 className="text-4xl md:text-6xl font-extrabold tracking-tight mb-8 leading-[1.1]">
             Grow Your Social Media <br />
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-400 to-emerald-300">
               Instantly & Safely.
@@ -152,7 +152,7 @@ export default function HomePage() {
       {/* ══ FEATURES ════════════════════════════════════════════════════════ */}
       <section className="py-24 px-6 max-w-7xl mx-auto relative z-10">
         <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-5xl font-bold mb-4">Why Choose Jelboost GH?</h2>
+          <h2 className="text-3xl md:text-4xl font-bold mb-4">Why Choose Jelboost GH?</h2>
           <p className="text-gray-400 text-lg max-w-2xl mx-auto">We provide the highest quality services on the market, built on a robust, automated infrastructure.</p>
         </div>
 
@@ -181,7 +181,7 @@ export default function HomePage() {
         <div className="max-w-7xl mx-auto">
           <div className="flex flex-col md:flex-row items-center justify-between mb-16 gap-8">
             <div className="md:w-1/2">
-              <h2 className="text-3xl md:text-5xl font-bold mb-4">Dominate Every Platform</h2>
+              <h2 className="text-3xl md:text-4xl font-bold mb-4">Dominate Every Platform</h2>
               <p className="text-gray-400 text-lg">Whether you're an influencer, musician, or business, we have tailored services for every major social network to help you go viral.</p>
             </div>
             <Link href="/services">
@@ -213,7 +213,7 @@ export default function HomePage() {
       {/* ══ HOW IT WORKS ════════════════════════════════════════════════════ */}
       <section className="py-32 px-6 max-w-7xl mx-auto">
         <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-5xl font-bold mb-4">How It Works</h2>
+          <h2 className="text-3xl md:text-4xl font-bold mb-4">How It Works</h2>
           <p className="text-gray-400 text-lg">Get started in three simple steps.</p>
         </div>
 
@@ -239,7 +239,7 @@ export default function HomePage() {
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-4xl h-64 bg-brand-500/30 blur-[150px] -z-10"></div>
         
         <div className="max-w-4xl mx-auto text-center relative z-10 border border-brand-500/20 rounded-3xl p-12 md:p-20 bg-[#050B14]/80 backdrop-blur-xl shadow-2xl">
-          <h2 className="text-4xl md:text-6xl font-bold mb-6">Ready to go viral?</h2>
+          <h2 className="text-3xl md:text-5xl font-bold mb-6">Ready to go viral?</h2>
           <p className="text-xl text-gray-300 mb-10 max-w-2xl mx-auto">Join 50,000+ creators and businesses who trust Jelboost GH to handle their social growth.</p>
           
           <Link href="/auth/register">

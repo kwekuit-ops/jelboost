@@ -74,10 +74,10 @@ const itemVariants = {
 
 export default function HomePage() {
   return (
-    <div className="flex flex-col w-full min-h-screen bg-[#050B14] text-white selection:bg-brand-500/30 font-sans overflow-hidden">
+    <div className="w-full bg-[#050B14] text-white selection:bg-brand-500/30 font-sans overflow-hidden">
       
       {/* ══ HERO SECTION ════════════════════════════════════════════════════ */}
-      <section className="relative pt-40 pb-20 lg:pt-48 lg:pb-32 px-6 flex flex-col items-center justify-center text-center">
+      <section className="relative pt-40 pb-20 lg:pt-48 lg:pb-32 px-6 text-center">
         {/* Abstract Background Elements */}
         <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-brand-500/20 rounded-full blur-[120px] -z-10 animate-pulse-slow"></div>
         <div className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-blue-500/20 rounded-full blur-[100px] -z-10 animate-pulse-slow delay-1000"></div>

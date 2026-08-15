@@ -56,7 +56,7 @@ export function Footer() {
           {/* Brand */}
           <div className="lg:col-span-2">
             <Link href="/" className="flex items-center mb-4">
-              <Image src="/logo.png" alt="Jelboost Logo" width={160} height={48} className="h-10 w-auto md:h-12 mix-blend-screen" />
+              <Image src="/logo.png" alt="Jelboost Logo" width={160} height={48} className="h-10 w-auto md:h-12" />
             </Link>
             <p className="text-sm text-gray-400 leading-relaxed mb-6 max-w-xs">
               Ghana&apos;s #1 social media growth platform. Buy high-quality followers, likes, and views for all major platforms. Fast, safe, and affordable.

@@ -66,7 +66,7 @@ export default function LoginPage() {
         {/* Logo */}
         <div className="text-center mb-8">
           <Link href="/" className="inline-flex justify-center mb-6">
-            <Image src="/logo.png" alt="Jelboost Logo" width={160} height={48} className="h-12 w-auto mix-blend-screen" priority />
+            <Image src="/logo.png" alt="Jelboost Logo" width={160} height={48} className="h-12 w-auto" priority />
           </Link>
           <h1 className="font-display text-2xl font-bold text-white">Welcome back</h1>
           <p className="text-white/60 text-sm mt-1">Sign in to your account</p>

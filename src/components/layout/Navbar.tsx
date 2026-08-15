@@ -57,7 +57,7 @@ export function Navbar() {
         <div className="flex items-center justify-between h-16 lg:h-20">
           {/* Logo */}
           <Link href="/" className="flex items-center shrink-0" aria-label="Jelboost GH home">
-            <Image src="/logo.png" alt="Jelboost Logo" width={160} height={48} className="h-10 w-auto md:h-12 mix-blend-screen dark:mix-blend-lighten" priority />
+            <Image src="/logo.png" alt="Jelboost Logo" width={160} height={48} className="h-10 w-auto md:h-12" priority />
           </Link>
 
           {/* Desktop Nav */}

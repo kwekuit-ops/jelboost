@@ -36,11 +36,11 @@ const FOOTER_LINKS = {
 };
 
 const SOCIAL_LINKS = [
-  { icon: Twitter,   href: "https://twitter.com/jelboostgh",   label: "Twitter" },
-  { icon: Facebook,  href: "https://facebook.com/jelboostgh",  label: "Facebook" },
-  { icon: Instagram, href: "https://instagram.com/jelboostgh", label: "Instagram" },
-  { icon: Youtube,   href: "https://youtube.com/@jelboostgh",  label: "YouTube" },
-  { icon: Send,      href: "https://t.me/jelboostgh",          label: "Telegram" },
+  { icon: Twitter,   href: "https://twitter.com/jelboost",   label: "Twitter" },
+  { icon: Facebook,  href: "https://facebook.com/jelboost",  label: "Facebook" },
+  { icon: Instagram, href: "https://instagram.com/jelboost", label: "Instagram" },
+  { icon: Youtube,   href: "https://youtube.com/@jelboost",  label: "YouTube" },
+  { icon: Send,      href: "https://t.me/jelboost",          label: "Telegram" },
 ];
 
 const PAYMENT_ICONS = ["Paystack", "Flutterwave", "Stripe", "PayPal", "USDT", "MTN MoMo"];
@@ -56,7 +56,7 @@ export function Footer() {
           {/* Brand */}
           <div className="lg:col-span-2">
             <Link href="/" className="flex items-center mb-4">
-              <Image src="/logo.png" alt="Jelboost Logo" width={160} height={48} className="h-10 w-auto md:h-12" />
+              <Image src="/logo.png" alt="Jelboost GH Logo" width={160} height={48} className="h-10 w-auto md:h-12" />
             </Link>
             <p className="text-sm text-gray-400 leading-relaxed mb-6 max-w-xs">
               Ghana&apos;s #1 social media growth platform. Buy high-quality followers, likes, and views for all major platforms. Fast, safe, and affordable.

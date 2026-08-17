@@ -31,7 +31,7 @@ export const metadata: Metadata = {
     card:        "summary_large_image",
     title:       "Jelboost GH",
     description: "Buy high-quality social media engagement. Fast, safe, guaranteed.",
-    creator:     "@jelboostgh",
+    creator:     "@jelboost",
   },
   robots: {
     index:  true,

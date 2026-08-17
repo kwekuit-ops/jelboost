@@ -1,60 +1,83 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
+import crypto from "crypto";
 
 export async function POST(req: NextRequest) {
   try {
-    const payload = await req.json();
-    
-    // Moolre will typically send a signature header to verify the webhook
-    // For production, you should verify the webhook signature here
-    // using process.env.MOOLRE_API_KEY
-    
-    if (payload.status === "successful" || payload.status === "success") {
-      const reference = payload.reference || payload.data?.reference;
-      
-      // Handle potential payload structure variations depending on Moolre's exact webhook format
-      const amountPaid = payload.amount || payload.data?.amount;
+    const bodyText = await req.text();
+    const payload  = JSON.parse(bodyText);
 
-      if (!reference) {
-        return NextResponse.json({ error: "Missing reference in payload" }, { status: 400 });
-      }
-
-      // Find the pending transaction
-      const transaction = await prisma.transaction.findUnique({
-        where: { paymentReference: reference }
-      });
-
-      if (!transaction) {
-        console.error(`[MOOLRE WEBHOOK] Transaction not found: ${reference}`);
-        return NextResponse.json({ error: "Transaction not found" }, { status: 404 });
-      }
-
-      if (transaction.status === "COMPLETED") {
-        // Already processed
-        return NextResponse.json({ status: "success" }, { status: 200 });
-      }
-
-      // Atomically update transaction and user balance
-      await prisma.$transaction([
-        prisma.transaction.update({
-          where: { id: transaction.id },
-          data: {
-            status: "COMPLETED",
-            metadata: payload as any,
-          }
-        }),
-        prisma.user.update({
-          where: { id: transaction.userId },
-          data: { balance: { increment: Number(amountPaid) || transaction.amount } }
-        })
-      ]);
-
-      console.log(`[MOOLRE WEBHOOK] Successfully processed deposit: ${reference}`);
+    // ── Signature verification (Bridge Secret) ───────────────
+    // The payload is now coming from Jeilinks bridge, not Moolre directly
+    const signature = req.headers.get("x-bridge-secret");
+    if (process.env.JELBOOST_BRIDGE_SECRET && signature !== process.env.JELBOOST_BRIDGE_SECRET) {
+      console.warn("[MOOLRE WEBHOOK] Invalid bridge secret — rejecting");
+      return NextResponse.json({ error: "Invalid signature" }, { status: 401 });
     }
 
+    // ── Handle successful payment ─────────────────────────────────────────────
+    const status    = payload.status ?? payload.data?.status ?? "";
+    const isSuccess = status === "successful" || status === "success" || status === "SUCCESSFUL";
+
+    if (!isSuccess) {
+      // Not a success event — acknowledge and ignore
+      return NextResponse.json({ status: "ignored" }, { status: 200 });
+    }
+
+    const reference  = payload.reference || payload.data?.reference;
+    const amountPaid = Number(payload.amount || payload.data?.amount || 0);
+
+    if (!reference) {
+      console.error("[MOOLRE WEBHOOK] Missing reference in payload:", payload);
+      return NextResponse.json({ error: "Missing reference" }, { status: 400 });
+    }
+
+    // Find the pending transaction by paymentReference
+    const transaction = await prisma.transaction.findUnique({
+      where: { paymentReference: reference },
+    });
+
+    if (!transaction) {
+      console.error(`[MOOLRE WEBHOOK] Transaction not found for reference: ${reference}`);
+      return NextResponse.json({ error: "Transaction not found" }, { status: 404 });
+    }
+
+    // Idempotency guard — don't double-credit
+    if (transaction.status === "COMPLETED") {
+      return NextResponse.json({ status: "already_processed" }, { status: 200 });
+    }
+
+    // Credit the amount that was actually paid (fall back to the original amount)
+    const creditAmount = amountPaid > 0 ? amountPaid : transaction.amount;
+
+    // Atomically complete the transaction + credit user balance + create notification
+    await prisma.$transaction([
+      prisma.transaction.update({
+        where: { id: transaction.id },
+        data: {
+          status:   "COMPLETED",
+          metadata: payload as any,
+        },
+      }),
+      prisma.user.update({
+        where: { id: transaction.userId },
+        data:  { balance: { increment: creditAmount } },
+      }),
+      prisma.notification.create({
+        data: {
+          userId:  transaction.userId,
+          title:   "Deposit Successful 🎉",
+          message: `Your wallet has been credited with GH₵${creditAmount.toFixed(2)} via Mobile Money`,
+          type:    "payment",
+        },
+      }),
+    ]);
+
+    console.log(`[MOOLRE WEBHOOK] Credited GH₵${creditAmount} for reference: ${reference}`);
     return NextResponse.json({ status: "success" }, { status: 200 });
+
   } catch (error) {
     console.error("[MOOLRE WEBHOOK ERROR]", error);
-    return NextResponse.json({ error: "Webhook error" }, { status: 500 });
+    return NextResponse.json({ error: "Webhook processing error" }, { status: 500 });
   }
 }

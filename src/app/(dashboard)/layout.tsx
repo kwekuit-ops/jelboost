@@ -65,7 +65,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
     <div className="flex flex-col h-full">
       {/* Logo */}
       <div className="flex items-center px-6 py-5 border-b border-surface-border dark:border-surface-border-dark">
-        <Image src="/logo.png" alt="Jelboost Logo" width={140} height={42} className="h-8 w-auto" />
+        <Image src="/logo.png" alt="Jelboost GH Logo" width={140} height={42} className="h-8 w-auto" />
       </div>
 
       {/* Balance Card */}

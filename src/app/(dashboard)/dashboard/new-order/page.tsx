@@ -4,7 +4,8 @@ import { useState, useMemo, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { Zap, Link as LinkIcon, Hash, Info, Wallet } from "lucide-react";
 import { Button } from "@/components/ui/Button";
@@ -28,6 +29,7 @@ export default function NewOrderPage() {
   const [discount, setDiscount] = useState(0);
   const [services, setServices] = useState<any[]>([]);
   const [loadingServices, setLoadingServices] = useState(true);
+  const router = useRouter();
 
   useEffect(() => {
     const fetchServices = async () => {
@@ -74,6 +76,7 @@ export default function NewOrderPage() {
     try {
       await axios.post("/api/orders", { ...data, totalPrice });
       toast.success("Order placed successfully! 🎉");
+      router.push("/dashboard/orders");
     } catch (err: any) {
       toast.error(err.response?.data?.error || "Failed to place order");
     }
@@ -148,7 +151,7 @@ export default function NewOrderPage() {
                 type="number"
                 leftIcon={<Hash size={16} />}
                 error={errors.quantity?.message || quantityError || undefined}
-                hint={selectedService ? `Min: ${selectedService.min.toLocaleString()} — Max: ${selectedService.max.toLocaleString()}` : undefined}
+                hint={selectedService ? `Min: ${selectedService.minQuantity.toLocaleString()} — Max: ${selectedService.maxQuantity.toLocaleString()}` : undefined}
                 required
                 {...register("quantity")}
               />

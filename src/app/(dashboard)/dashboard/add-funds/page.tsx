@@ -7,9 +7,8 @@ import { Button } from "@/components/ui/Button";
 import { Wallet, CreditCard, Bitcoin, AlertCircle, RefreshCw } from "lucide-react";
 
 const PAYMENT_METHODS = [
-  { id: "moolre", name: "Mobile Money (Moolre)", icon: CreditCard, color: "text-emerald-500", bg: "bg-emerald-500/10", border: "border-emerald-500/20", description: "MTN, Telecel, AT & Bank Transfer" },
-  { id: "stripe",   name: "Stripe",   icon: CreditCard, color: "text-indigo-500",  bg: "bg-indigo-500/10",  border: "border-indigo-500/20",  description: "International Cards, Apple Pay, Google Pay", disabled: true },
-  { id: "crypto",   name: "Crypto",   icon: Bitcoin,    color: "text-amber-500",   bg: "bg-amber-500/10",   border: "border-amber-500/20",   description: "BTC, ETH, USDT, LTC", disabled: true },
+  { id: "moolre", name: "Mobile Money (Moolre)", icon: CreditCard, color: "text-emerald-500", bg: "bg-emerald-500/10", border: "border-emerald-500/20", description: "MTN MoMo, Telecel Cash, AirtelTigo Money & Bank Transfer" },
+  { id: "crypto", name: "Crypto (USDT TRC20)",  icon: Bitcoin,    color: "text-amber-500",   bg: "bg-amber-500/10",   border: "border-amber-500/20",   description: "Tether on the Tron network" },
 ];
 
 export default function AddFundsPage() {
@@ -20,28 +19,35 @@ export default function AddFundsPage() {
 
   const handleDeposit = async () => {
     const value = parseFloat(amount);
-    if (isNaN(value) || value < 5) {
-      setError("Minimum deposit is $5.00");
+    if (isNaN(value) || value < 1) {
+      setError("Minimum deposit is GH₵1.00");
       return;
     }
-    
+
     setLoading(true);
     setError(null);
-    
+
     try {
-      const res = await fetch("/api/payments/deposit", {
+      const res = await fetch("/api/wallet/deposit", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ amount: value, method: selectedMethod })
+        body: JSON.stringify({
+          amount: value,
+          paymentMethod: selectedMethod,
+          currency: "GHS",
+        }),
       });
       const data = await res.json();
-      
+
       if (!res.ok) throw new Error(data.error || "Deposit initialization failed");
-      
-      if (data.checkoutUrl) {
-        window.location.href = data.checkoutUrl;
+
+      if (data.paymentUrl) {
+        window.location.href = data.paymentUrl;
+      } else if (data.method === "crypto") {
+        // Crypto — redirect to wallet page for address display
+        window.location.href = "/dashboard/wallet";
       } else {
-        throw new Error("No checkout URL returned");
+        throw new Error("No payment URL returned from gateway");
       }
     } catch (e: any) {
       setError(e.message);
@@ -65,12 +71,12 @@ export default function AddFundsPage() {
         <Card className="md:col-span-3 p-6 space-y-6">
           {/* Amount Input */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Deposit Amount (GHS)</label>
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Deposit Amount (GHS — Ghanaian Cedi)</label>
             <div className="relative">
               <span className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 dark:text-gray-400 font-medium text-lg">GH₵</span>
               <input
                 type="number"
-                min="5"
+                min="1"
                 step="1"
                 value={amount}
                 onChange={(e) => setAmount(e.target.value)}
@@ -99,15 +105,14 @@ export default function AddFundsPage() {
               {PAYMENT_METHODS.map(method => {
                 const Icon = method.icon;
                 const isSelected = selectedMethod === method.id;
-                
+
                 return (
                   <div
                     key={method.id}
-                    onClick={() => !method.disabled && setSelectedMethod(method.id)}
+                    onClick={() => setSelectedMethod(method.id)}
                     className={`
                       relative p-4 rounded-xl border-2 cursor-pointer transition-all flex items-center gap-4
                       ${isSelected ? 'border-brand-500 bg-brand-50 dark:bg-brand-500/10' : 'border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900/50 hover:border-gray-300 dark:hover:border-gray-700'}
-                      ${method.disabled ? 'opacity-50 cursor-not-allowed grayscale' : ''}
                     `}
                   >
                     <div className={`w-12 h-12 rounded-xl flex items-center justify-center shrink-0 ${method.bg} ${method.border}`}>
@@ -118,7 +123,6 @@ export default function AddFundsPage() {
                         <p className={`font-bold ${isSelected ? 'text-brand-600 dark:text-brand-400' : 'text-gray-900 dark:text-white'}`}>
                           {method.name}
                         </p>
-                        {method.disabled && <span className="text-xs font-semibold px-2 py-0.5 rounded bg-gray-100 dark:bg-gray-800 text-gray-500">Coming Soon</span>}
                       </div>
                       <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">{method.description}</p>
                     </div>
@@ -146,7 +150,7 @@ export default function AddFundsPage() {
                 <RefreshCw className="animate-spin" size={20} /> Processing...
               </span>
             ) : (
-              `Pay $${parseFloat(amount || "0").toFixed(2)} securely`
+              `Pay GH₵${parseFloat(amount || "0").toFixed(2)} securely`
             )}
           </Button>
         </Card>

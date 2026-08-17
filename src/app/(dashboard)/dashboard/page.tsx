@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useState, useCallback } from "react";
 import { motion } from "framer-motion";
 import { Card, CardHeader, CardTitle } from "@/components/ui/Card";
 import { Badge, StatusBadge } from "@/components/ui/Badge";
@@ -11,22 +12,11 @@ import {
 import Link from "next/link";
 import { Button } from "@/components/ui/Button";
 
-// Placeholder data — replace with real API calls
-const STATS = [
-  { label: "Account Balance",   value: "$0.00",  icon: DollarSign, color: "text-emerald-500", bg: "bg-emerald-50 dark:bg-emerald-900/20" },
-  { label: "Total Orders",      value: "0",       icon: ShoppingBag, color: "text-blue-500",   bg: "bg-blue-50 dark:bg-blue-900/20" },
-  { label: "Active Orders",     value: "0",       icon: Clock,       color: "text-amber-500",  bg: "bg-amber-50 dark:bg-amber-900/20" },
-  { label: "Completed Orders",  value: "0",       icon: CheckCircle2, color: "text-brand-500", bg: "bg-brand-50 dark:bg-brand-900/20" },
-];
-
-const RECENT_ORDERS: any[] = [];
-const NOTIFICATIONS: any[] = [];
-
 const QUICK_ACTIONS = [
-  { label: "New Order",      href: "/dashboard/new-order",     icon: Zap,       color: "bg-brand-600" },
-  { label: "Add Funds",      href: "/dashboard/wallet",        icon: Wallet,    color: "bg-emerald-600" },
-  { label: "Track Orders",   href: "/dashboard/orders",        icon: ShoppingBag, color: "bg-blue-600" },
-  { label: "Notifications",  href: "/dashboard/notifications", icon: Bell,      color: "bg-amber-500" },
+  { label: "New Order",     href: "/dashboard/new-order",     icon: Zap,         color: "bg-brand-600" },
+  { label: "Add Funds",     href: "/dashboard/wallet",        icon: Wallet,      color: "bg-emerald-600" },
+  { label: "Track Orders",  href: "/dashboard/orders",        icon: ShoppingBag, color: "bg-blue-600" },
+  { label: "Notifications", href: "/dashboard/notifications", icon: Bell,        color: "bg-amber-500" },
 ];
 
 const containerVariants = {
@@ -38,15 +28,78 @@ const itemVariants = {
   show:   { opacity: 1, y: 0, transition: { duration: 0.4 } },
 };
 
+interface DashboardData {
+  balance: number;
+  totalSpent: number;
+  totalOrders: number;
+  activeOrders: number;
+  completedOrders: number;
+  recentOrders: Array<{
+    id: string;
+    status: string;
+    totalPrice: number;
+    createdAt: string;
+    service: { name: string };
+  }>;
+  recentNotifications: Array<{
+    id: string;
+    title: string;
+    message: string;
+    isRead: boolean;
+    createdAt: string;
+  }>;
+  unreadCount: number;
+}
+
 export default function DashboardPage() {
+  const [data, setData] = useState<DashboardData | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  const fetchDashboard = useCallback(async () => {
+    try {
+      const [balanceRes, ordersRes, notifsRes] = await Promise.all([
+        fetch("/api/wallet/balance"),
+        fetch("/api/orders?limit=5"),
+        fetch("/api/notifications"),
+      ]);
+
+      const [balanceData, ordersData, notifsData] = await Promise.all([
+        balanceRes.ok ? balanceRes.json() : Promise.resolve({} as any),
+        ordersRes.ok ? ordersRes.json() : Promise.resolve({ orders: [], total: 0 } as any),
+        notifsRes.ok ? notifsRes.json() : Promise.resolve({ notifications: [], unreadCount: 0 } as any),
+      ]);
+
+      const allOrders: any[] = ordersData.orders ?? [];
+
+      setData({
+        balance:             balanceData.balance      ?? 0,
+        totalSpent:          balanceData.totalSpent   ?? 0,
+        totalOrders:         ordersData.total         ?? 0,
+        activeOrders:        allOrders.filter((o: any) => ["PENDING", "PROCESSING"].includes(o.status)).length,
+        completedOrders:     allOrders.filter((o: any) => o.status === "COMPLETED").length,
+        recentOrders:        allOrders.slice(0, 5),
+        recentNotifications: (notifsData.notifications ?? []).slice(0, 4),
+        unreadCount:         notifsData.unreadCount ?? 0,
+      });
+    } catch (err) {
+      console.error("[DASHBOARD]", err);
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  useEffect(() => { fetchDashboard(); }, [fetchDashboard]);
+
+  const stats = [
+    { label: "Account Balance",  value: loading ? "—" : formatCurrency(data?.balance  ?? 0), icon: DollarSign,  color: "text-emerald-500", bg: "bg-emerald-50 dark:bg-emerald-900/20" },
+    { label: "Total Orders",     value: loading ? "—" : String(data?.totalOrders      ?? 0), icon: ShoppingBag, color: "text-blue-500",    bg: "bg-blue-50 dark:bg-blue-900/20" },
+    { label: "Active Orders",    value: loading ? "—" : String(data?.activeOrders     ?? 0), icon: Clock,       color: "text-amber-500",   bg: "bg-amber-50 dark:bg-amber-900/20" },
+    { label: "Completed Orders", value: loading ? "—" : String(data?.completedOrders  ?? 0), icon: CheckCircle2, color: "text-brand-500",  bg: "bg-brand-50 dark:bg-brand-900/20" },
+  ];
+
   return (
-    <motion.div
-      variants={containerVariants}
-      initial="hidden"
-      animate="show"
-      className="space-y-6"
-    >
-      {/* Page Header */}
+    <motion.div variants={containerVariants} initial="hidden" animate="show" className="space-y-6">
+      {/* Header */}
       <motion.div variants={itemVariants} className="flex items-center justify-between">
         <div>
           <h1 className="font-display text-2xl font-bold text-gray-900 dark:text-white">Dashboard</h1>
@@ -59,23 +112,22 @@ export default function DashboardPage() {
         </Link>
       </motion.div>
 
-      {/* Stats Grid */}
+      {/* Stats */}
       <motion.div variants={itemVariants} className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        {STATS.map(({ label, value, icon: Icon, color, bg }) => (
+        {stats.map(({ label, value, icon: Icon, color, bg }) => (
           <Card key={label} padding="md" className="relative overflow-hidden">
             <div className="flex items-start justify-between">
               <div>
                 <p className="text-xs text-gray-500 dark:text-gray-400 mb-1">{label}</p>
-                <p className="font-display text-2xl font-bold text-gray-900 dark:text-white">{value}</p>
+                {loading ? (
+                  <div className="h-7 w-20 bg-gray-200 dark:bg-gray-700 animate-pulse rounded mt-1" />
+                ) : (
+                  <p className="font-display text-2xl font-bold text-gray-900 dark:text-white">{value}</p>
+                )}
               </div>
               <div className={`w-10 h-10 rounded-xl ${bg} flex items-center justify-center`}>
                 <Icon size={18} className={color} />
               </div>
-            </div>
-            <div className="flex items-center gap-1 mt-3">
-              <TrendingUp size={12} className="text-emerald-500" />
-              <span className="text-xs text-emerald-600 dark:text-emerald-400 font-medium">+0%</span>
-              <span className="text-xs text-gray-400">vs last month</span>
             </div>
           </Card>
         ))}
@@ -110,7 +162,21 @@ export default function DashboardPage() {
                 View all <ArrowUpRight size={12} />
               </Link>
             </div>
-            {RECENT_ORDERS.length === 0 ? (
+
+            {loading ? (
+              <div className="divide-y divide-surface-border dark:divide-surface-border-dark">
+                {[...Array(3)].map((_, i) => (
+                  <div key={i} className="flex items-center gap-4 px-6 py-4">
+                    <div className="flex-1 space-y-1.5">
+                      <div className="h-3 w-36 bg-gray-200 dark:bg-gray-700 animate-pulse rounded" />
+                      <div className="h-3 w-20 bg-gray-200 dark:bg-gray-700 animate-pulse rounded" />
+                    </div>
+                    <div className="h-5 w-16 bg-gray-200 dark:bg-gray-700 animate-pulse rounded-full" />
+                    <div className="h-4 w-14 bg-gray-200 dark:bg-gray-700 animate-pulse rounded" />
+                  </div>
+                ))}
+              </div>
+            ) : (data?.recentOrders ?? []).length === 0 ? (
               <div className="flex flex-col items-center justify-center py-16 text-center px-6">
                 <div className="w-16 h-16 rounded-2xl bg-gray-100 dark:bg-gray-800 flex items-center justify-center mb-4">
                   <ShoppingBag size={24} className="text-gray-400" />
@@ -123,10 +189,10 @@ export default function DashboardPage() {
               </div>
             ) : (
               <div className="divide-y divide-surface-border dark:divide-surface-border-dark">
-                {RECENT_ORDERS.map((order) => (
-                  <div key={order.id} className="flex items-center gap-4 px-6 py-4">
+                {data!.recentOrders.map((order) => (
+                  <div key={order.id} className="flex items-center gap-4 px-6 py-4 hover:bg-gray-50 dark:hover:bg-gray-800/30 transition-colors">
                     <div className="flex-1 min-w-0">
-                      <p className="text-sm font-medium text-gray-900 dark:text-white truncate">{order.service}</p>
+                      <p className="text-sm font-medium text-gray-900 dark:text-white truncate">{order.service?.name}</p>
                       <p className="text-xs text-gray-500">{formatDate(order.createdAt)}</p>
                     </div>
                     <StatusBadge status={order.status} />
@@ -138,13 +204,17 @@ export default function DashboardPage() {
           </Card>
         </motion.div>
 
-        {/* Notifications + Wallet */}
+        {/* Sidebar: Wallet + Notifications */}
         <motion.div variants={itemVariants} className="lg:col-span-2 space-y-5">
-          {/* Wallet */}
+          {/* Wallet card */}
           <div className="relative overflow-hidden rounded-2xl bg-brand-gradient p-6 shadow-brand">
             <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full blur-2xl" />
             <p className="text-white/70 text-xs font-medium mb-1">Available Balance</p>
-            <p className="font-display text-3xl font-bold text-white mb-4">$0.00</p>
+            {loading ? (
+              <div className="h-9 w-28 bg-white/20 animate-pulse rounded-lg mb-4" />
+            ) : (
+              <p className="font-display text-3xl font-bold text-white mb-4">{formatCurrency(data?.balance ?? 0)}</p>
+            )}
             <Link href="/dashboard/wallet">
               <button className="flex items-center gap-2 bg-white/20 hover:bg-white/30 text-white text-sm font-semibold px-4 py-2 rounded-xl transition-colors">
                 <Wallet size={15} /> Add Funds
@@ -152,18 +222,51 @@ export default function DashboardPage() {
             </Link>
           </div>
 
-          {/* Notifications */}
+          {/* Notifications preview */}
           <Card padding="none" className="overflow-hidden">
             <div className="flex items-center justify-between p-4 border-b border-surface-border dark:border-surface-border-dark">
               <CardTitle className="text-base">Notifications</CardTitle>
-              <Badge variant="primary" size="sm">{NOTIFICATIONS.length}</Badge>
+              {(data?.unreadCount ?? 0) > 0 && (
+                <Badge variant="primary" size="sm">{data!.unreadCount}</Badge>
+              )}
             </div>
-            {NOTIFICATIONS.length === 0 ? (
+            {loading ? (
+              <div className="space-y-1 p-3">
+                {[...Array(3)].map((_, i) => (
+                  <div key={i} className="flex gap-3 p-2">
+                    <div className="h-8 w-8 rounded-lg bg-gray-200 dark:bg-gray-700 animate-pulse shrink-0" />
+                    <div className="flex-1 space-y-1.5 pt-1">
+                      <div className="h-2.5 w-32 bg-gray-200 dark:bg-gray-700 animate-pulse rounded" />
+                      <div className="h-2.5 w-full bg-gray-200 dark:bg-gray-700 animate-pulse rounded" />
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ) : (data?.recentNotifications ?? []).length === 0 ? (
               <div className="flex flex-col items-center justify-center py-10 text-center px-4">
                 <Bell size={24} className="text-gray-300 dark:text-gray-600 mb-2" />
                 <p className="text-sm text-gray-500 dark:text-gray-400">No notifications</p>
               </div>
-            ) : null}
+            ) : (
+              <div className="divide-y divide-surface-border dark:divide-surface-border-dark">
+                {data!.recentNotifications.map((n) => (
+                  <div key={n.id} className={`flex gap-3 p-4 ${!n.isRead ? "bg-brand-50/40 dark:bg-brand-950/10" : ""}`}>
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center justify-between gap-1">
+                        <p className="text-xs font-semibold text-gray-900 dark:text-white truncate">{n.title}</p>
+                        {!n.isRead && <div className="w-1.5 h-1.5 rounded-full bg-brand-500 shrink-0" />}
+                      </div>
+                      <p className="text-xs text-gray-500 dark:text-gray-400 truncate mt-0.5">{n.message}</p>
+                    </div>
+                  </div>
+                ))}
+                <div className="p-3">
+                  <Link href="/dashboard/notifications" className="text-xs text-brand-500 hover:text-brand-600 font-medium flex items-center justify-center gap-1">
+                    View all notifications <ArrowUpRight size={11} />
+                  </Link>
+                </div>
+              </div>
+            )}
           </Card>
         </motion.div>
       </div>

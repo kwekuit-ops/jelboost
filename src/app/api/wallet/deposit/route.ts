@@ -5,9 +5,9 @@ import { prisma } from "@/lib/prisma";
 import { z } from "zod";
 
 const depositSchema = z.object({
-  amount:        z.coerce.number().positive().min(1),
-  paymentMethod: z.string().min(1),
-  currency:      z.string().default("USD"),
+  amount:        z.coerce.number().positive().min(1, "Minimum deposit is GH₵1"),
+  paymentMethod: z.enum(["moolre", "crypto"]),
+  currency:      z.string().default("GHS"),
 });
 
 export async function POST(req: NextRequest) {
@@ -18,85 +18,76 @@ export async function POST(req: NextRequest) {
     const body   = await req.json();
     const parsed = depositSchema.parse(body);
 
-    // Create a pending transaction
+    const user = await prisma.user.findUnique({ where: { id: session.user.id } });
+    if (!user) return NextResponse.json({ error: "User not found" }, { status: 404 });
+
+    // Generate a unique reference
+    const reference = `DEP-${Date.now()}-${Math.random().toString(36).substring(2, 9).toUpperCase()}`;
+
+    // Create pending transaction with paymentReference so webhook can look it up
     const transaction = await prisma.transaction.create({
       data: {
-        userId:        session.user.id,
-        type:          "DEPOSIT",
-        status:        "PENDING",
-        amount:        parsed.amount,
-        currency:      parsed.currency,
-        paymentMethod: parsed.paymentMethod,
-        description:   `Wallet deposit via ${parsed.paymentMethod}`,
+        userId:           user.id,
+        type:             "DEPOSIT",
+        status:           "PENDING",
+        amount:           parsed.amount,
+        currency:         parsed.currency,
+        paymentMethod:    parsed.paymentMethod,
+        paymentReference: reference,
+        description:      `Wallet deposit via ${parsed.paymentMethod === "moolre" ? "Mobile Money (Moolre)" : "Crypto"}`,
       },
     });
 
-    let paymentUrl: string | null = null;
+    // ── Moolre (Via Jeilinks Bridge) ─────────────────────────────────────────
+    if (parsed.paymentMethod === "moolre") {
+      const moolreRes = await fetch("https://jeilinks.site/api/bridge/moolre/init", {
+        method: "POST",
+        headers: {
+          "x-bridge-secret": process.env.JELBOOST_BRIDGE_SECRET || "",
+          "Content-Type":    "application/json",
+        },
+        body: JSON.stringify({
+          customer_email: user.email,
+          customer_name:  user.name || "Customer",
+          amount:         parsed.amount,
+          reference,
+          // Jeilinks bridge will handle callback_url and webhook_url internally
+        }),
+      });
 
-    // Payment provider routing
-    switch (parsed.paymentMethod) {
-      case "paystack": {
-        // Initialize Paystack transaction
-        const res = await fetch("https://api.paystack.co/transaction/initialize", {
-          method: "POST",
-          headers: {
-            Authorization: `Bearer ${process.env.PAYSTACK_SECRET_KEY}`,
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            email:     session.user.email,
-            amount:    Math.round(parsed.amount * 100), // kobo
-            reference: transaction.id,
-            callback_url: `${process.env.NEXT_PUBLIC_APP_URL}/dashboard/wallet?success=true`,
-            metadata:  { transactionId: transaction.id, userId: session.user.id },
-          }),
-        });
-        const data = await res.json();
-        if (data.status) paymentUrl = data.data.authorization_url;
-        break;
+      const moolreData = await moolreRes.json();
+
+      let paymentUrl: string;
+
+      if (moolreRes.ok && moolreData.status && moolreData.data?.checkout_url) {
+        paymentUrl = moolreData.data.checkout_url;
+      } else {
+        // Log the actual Moolre error for debugging
+        console.error("[WALLET DEPOSIT] Moolre error:", moolreData);
+        throw new Error(
+          moolreData?.message || moolreData?.error || "Moolre checkout initialization failed"
+        );
       }
-      case "flutterwave": {
-        const res = await fetch("https://api.flutterwave.com/v3/payments", {
-          method: "POST",
-          headers: {
-            Authorization: `Bearer ${process.env.FLUTTERWAVE_SECRET_KEY}`,
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            tx_ref:       transaction.id,
-            amount:       parsed.amount,
-            currency:     "GHS",
-            redirect_url: `${process.env.NEXT_PUBLIC_APP_URL}/dashboard/wallet?success=true`,
-            customer:     { email: session.user.email, name: session.user.name },
-            customizations: { title: "Jelboost GH — Wallet Deposit" },
-          }),
-        });
-        const data = await res.json();
-        if (data.status === "success") paymentUrl = data.data.link;
-        break;
-      }
-      case "stripe": {
-        // Stripe is handled client-side; return client secret placeholder
-        break;
-      }
-      case "crypto": {
-        return NextResponse.json({
-          method: "crypto",
-          address: process.env.CRYPTO_WALLET_ADDRESS,
-          amount: parsed.amount,
-          transactionId: transaction.id,
-        });
-      }
-      default:
-        break;
+
+      return NextResponse.json({ paymentUrl, reference, transactionId: transaction.id });
     }
 
-    return NextResponse.json({ paymentUrl, transactionId: transaction.id });
+    // ── Crypto ───────────────────────────────────────────────────────────────
+    if (parsed.paymentMethod === "crypto") {
+      return NextResponse.json({
+        method:        "crypto",
+        address:       process.env.CRYPTO_WALLET_ADDRESS || "",
+        amount:        parsed.amount,
+        transactionId: transaction.id,
+      });
+    }
+
+    return NextResponse.json({ error: "Unsupported payment method" }, { status: 400 });
   } catch (err: any) {
     if (err.name === "ZodError") {
       return NextResponse.json({ error: err.errors[0]?.message }, { status: 422 });
     }
     console.error("[WALLET DEPOSIT]", err);
-    return NextResponse.json({ error: "Internal server error" }, { status: 500 });
+    return NextResponse.json({ error: err.message || "Internal server error" }, { status: 500 });
   }
 }

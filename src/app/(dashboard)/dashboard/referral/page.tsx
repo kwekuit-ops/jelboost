@@ -86,8 +86,8 @@ export default function ReferralPage() {
         <h3 className="font-display font-bold text-gray-900 dark:text-white mb-4">Share Your Link</h3>
         <div className="flex flex-wrap gap-3">
           {[
-            { label: "WhatsApp",  color: "bg-green-500 hover:bg-green-600", href: `https://wa.me/?text=Join+Jelboost+GH+using+my+referral+link:+${encodeURIComponent(referralLink)}` },
-            { label: "Twitter/X", color: "bg-gray-900 hover:bg-gray-800",   href: `https://twitter.com/intent/tweet?text=Grow+your+social+media+with+%40jelboostgh!+Use+my+referral+link:&url=${encodeURIComponent(referralLink)}` },
+            { label: "WhatsApp",  color: "bg-green-500 hover:bg-green-600", href: `https://wa.me/?text=Join+Jelboost GH+GH+using+my+referral+link:+${encodeURIComponent(referralLink)}` },
+            { label: "Twitter/X", color: "bg-gray-900 hover:bg-gray-800",   href: `https://twitter.com/intent/tweet?text=Grow+your+social+media+with+%40jelboost!+Use+my+referral+link:&url=${encodeURIComponent(referralLink)}` },
             { label: "Facebook",  color: "bg-blue-600 hover:bg-blue-700",   href: `https://facebook.com/sharer/sharer.php?u=${encodeURIComponent(referralLink)}` },
             { label: "Telegram",  color: "bg-sky-500 hover:bg-sky-600",     href: `https://t.me/share/url?url=${encodeURIComponent(referralLink)}` },
           ].map(({ label, color, href }) => (

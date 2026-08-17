@@ -248,7 +248,7 @@ export default function HomePage() {
           <div className="md:col-span-2">
             <Link href="/" className="flex items-center gap-2 mb-6">
               <TrendingUp className="text-brand-500" size={28} />
-              <span className="font-display font-bold text-2xl tracking-tight text-white">Jelboost<span className="text-brand-500">GH</span></span>
+              <span className="font-display font-bold text-2xl tracking-tight text-white">Jelboost GH<span className="text-brand-500">GH</span></span>
             </Link>
             <p className="text-gray-400 max-w-sm mb-6 leading-relaxed">
               The premier Social Media Marketing panel in Ghana. We provide high-quality, instant, and affordable social media growth services.

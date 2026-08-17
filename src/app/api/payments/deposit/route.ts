@@ -69,8 +69,8 @@ export async function POST(req: NextRequest) {
         checkoutUrl = moolreData.data.checkout_url;
       }
     } else if (method === "paystack") {
-      // Stripe logic to be implemented later
-      throw new Error("Stripe is not fully configured yet.");
+      // Paystack is handled via /api/wallet/deposit — not supported here
+      throw new Error("Use the main deposit flow for Paystack.");
     } else if (method === "crypto") {
       // Crypto logic to be implemented later
       throw new Error("Crypto is not fully configured yet.");
